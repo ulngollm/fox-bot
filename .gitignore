@@ -47,3 +47,4 @@ env.bak/
 venv.bak/
 
 *.session
+*.session-journal
