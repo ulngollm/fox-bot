@@ -1,10 +1,13 @@
+import random
+
 from dotenv import load_dotenv
 from pyrogram import Client
 from pyrogram.handlers import MessageHandler
 from pyrogram import filters
 
-import requests as req
 import os
+
+from ApiClient import DogApiClient, RandomFoxApiClient, FoxrudorApiClient
 
 load_dotenv()
 API_ID = os.getenv('API_ID')
@@ -15,18 +18,23 @@ app = Client('bot', API_ID, API_HASH, bot_token=BOT_API_TOKEN)
 
 
 async def send_fox(client, message):
-    url = 'https://randomfox.ca/floof/'
-    result = req.get(url)
-    image = result.json().get('image')
+    src = (RandomFoxApiClient, FoxrudorApiClient)
+    image = random.choice(src)().get()
     await message.reply(image)
 
 
 async def refund(client, message):
     await app.delete_messages(message.chat.id, [message.id, message.reply_to_message_id])
-    await send_fox(client, message)
+
+
+async def send_dog(client, message):
+    api = DogApiClient()
+    image = api.random()
+    await message.reply(image)
 
 
 app.add_handler(MessageHandler(send_fox, filters.command('fox')))
+app.add_handler(MessageHandler(send_dog, filters.command('dog')))
 app.add_handler(MessageHandler(refund, filters.command('refund')))
 
 app.run()
