@@ -7,7 +7,7 @@ from pyrogram import filters
 
 import os
 
-from ApiClient import DogApiClient, RandomFoxApiClient, FoxrudorApiClient
+from ApiClient import DogApiClient, RandomFoxApiClient, TinyfoxApiClient
 
 load_dotenv()
 API_ID = os.getenv('API_ID')
@@ -33,7 +33,16 @@ async def send_dog(client, message):
     await message.reply(image)
 
 
-app.add_handler(MessageHandler(send_fox, filters.command('fox')))
+async def send_animal(client, message):
+    api = TinyfoxApiClient()
+    image = api.random(message.command[0])
+    await message.reply(image)
+
+
+app.add_handler(MessageHandler(send_animal, filters.command([
+    'fox', 'shiba', 'poss', 'capy', 'bun', 'racc'
+])))
+
 app.add_handler(MessageHandler(send_dog, filters.command('dog')))
 app.add_handler(MessageHandler(refund, filters.command('refund')))
 

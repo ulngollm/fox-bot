@@ -52,3 +52,18 @@ class FoxrudorApiClient(ApiClient):
 
     def random(self):
         return self.url
+
+
+class TinyfoxApiClient(ApiClient):
+    def __init__(self):
+        self.base_url = 'https://api.tinyfox.dev';
+        url = '/img?animal=%s&json'
+        super().__init__(self.resolve_url(url))
+
+    def random(self, animal):
+        result = req.get(self.url % animal)
+        image_path = result.json().get('loc')
+        return self.resolve_url(image_path)
+
+    def resolve_url(self, path):
+        return f"{self.base_url}{path}"
