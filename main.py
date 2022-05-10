@@ -19,7 +19,7 @@ app = Client('bot', API_ID, API_HASH, bot_token=BOT_API_TOKEN)
 
 async def send_fox(client, message):
     src = (RandomFoxApiClient, FoxrudorApiClient)
-    image = random.choice(src)().get()
+    image = random.choice(src)().random()
     await message.reply(image)
 
 

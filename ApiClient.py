@@ -50,5 +50,5 @@ class FoxrudorApiClient(ApiClient):
         url = 'https://foxrudor.de/'
         super().__init__(url)
 
-    def get(self):
+    def random(self):
         return self.url
